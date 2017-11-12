@@ -1,0 +1,182 @@
+options
+{
+  STATIC = false;
+}
+
+PARSER_BEGIN(Parser)
+package javacc;
+
+public class Parser
+{
+  public static void main(String [] args) throws ParseException, 
+  TokenMgrError
+  {
+    Parser parser;
+    if (args.length == 0)
+    {
+      System.out.println("Parser: Reading from standard input... ");
+      parser = new Parser(System.in);
+    }
+    else if (args.length == 1)
+    {
+      System.out.println("Parser: Reading from file " + args [0] + "...");
+      try
+      {
+        parser = new Parser(new java.io.FileInputStream(args [0]));
+      }
+      catch (java.io.FileNotFoundException e)
+      {
+        System.out.println("Parser: File " + args [0] + " not found.");
+        return;
+      }
+    }
+    else
+    {
+      System.out.println("Parser: Usage is one of:");
+      System.out.println(" java Parser < inputfile");
+      System.out.println("OR");
+      System.out.println(" java Scanner inputfile");
+      return;
+    }
+    try
+    {
+      parser.Start();
+      System.out.println("Parser: Program parsed successfully.");
+    }
+    catch (ParseException e)
+    {
+      System.out.println("Parser: Encountered errors on parsing.");
+      e.printStackTrace();
+    }
+  }
+}
+
+PARSER_END(Parser)
+
+SKIP :
+{
+  " "
+| "\n"
+| "\r"
+| "\r\n"
+}
+
+//Palavras Reservadas
+TOKEN : { < FUNCTION : "function" > }
+TOKEN : { < TIPOINTEGER : "integer" > }
+TOKEN : { < TIPOSTRING : "string" > }
+TOKEN : { < TIPOREAL : "real" > }
+TOKEN : { < IS : "is" > }
+TOKEN : { < VAR : "var" > }
+TOKEN : { < ENDVAR : "endvar" > }
+TOKEN : { < CODE : "code" > }
+TOKEN : { < ENDCODE : "endcode" > }
+TOKEN : { < RETURN : "return" > }
+
+//Tipos e Identificador
+TOKEN : { < INTEGER : (<DIGITO>)+ > }
+TOKEN : { < STRING : <ASPAS>(<LETTER>(<LETTER>|<DIGITO>))*<ASPAS> > }
+TOKEN : { < REAL : (<DIGITO>)+ (<PONTO>(<DIGITO>)+)? > }
+TOKEN : { < IDENTIFICADOR : <LETTER>(<LETTER>|<DIGITO>)* > }
+
+//Caracteres
+TOKEN : { < #LETTER : ["a"-"z","A"-"Z"] > }
+TOKEN : { < #DIGITO : ["0"-"9"] > }
+TOKEN : { < DOISPONTOS : ":" > }
+TOKEN : { < VIRGULA : "," > }
+TOKEN : { < PONTOVIRGULA : ";" > }
+TOKEN : { < PARENTESE1 : "(" > }
+TOKEN : { < PARENTESE2 : ")" > }
+TOKEN : { < PLUS : "+" > }
+TOKEN : { < SUB : "-" > }
+TOKEN : { < MULT : "*" > }
+TOKEN : { < DIV : "/" > }
+TOKEN : { < MOD : "%" > }
+TOKEN : { < ASPAS : "\"" > }
+TOKEN : { < PONTO : "." > }
+
+void Start() :
+{}
+{
+  funcao()
+  < EOF >
+}
+
+void funcao() :
+{}
+{
+	< FUNCTION >< IDENTIFICADOR >listaDeParametros()< DOISPONTOS >tipoDeParametro()blocoFuncao()
+}
+
+void listaDeParametros() :
+{}
+{
+	< PARENTESE1 >(nomeParametro()contListaDeParametro())?< PARENTESE2 >
+}
+
+void nomeParametro() :
+{}
+{
+	< IDENTIFICADOR >< DOISPONTOS >tipoDeParametro()
+}
+void contListaDeParametro() :
+{}
+{
+	( < VIRGULA >nomeParametro() )*
+}
+void tipoDeParametro() :
+{}
+{
+	< TIPOINTEGER >|< TIPOSTRING >|< TIPOREAL >
+}
+void blocoFuncao() :
+{}
+{
+	< IS >( blocoVar() )?blocoCode()
+}
+void blocoVar() :
+{}
+{
+	< VAR >( declaraVariavel() )*< ENDVAR >
+}
+void declaraVariavel() :
+{}
+{
+	< IDENTIFICADOR >< DOISPONTOS >tipoDeParametro()( atribuicao() )?< PONTOVIRGULA >
+}
+void atribuicao() :
+{}
+{
+	< PARENTESE1 >((< INTEGER >|< STRING >|< REAL >|< IDENTIFICADOR >)(operacao2())?)< PARENTESE2 >
+}
+void blocoCode() :
+{}
+{
+	< CODE > ( expressao() )* retorno() < ENDCODE >
+}
+void expressao() :
+{}
+{
+	funcao()|
+	< IDENTIFICADOR >(atribuicao() | operacao2())*< PONTOVIRGULA >
+}
+void retorno() :
+{}
+{
+	< RETURN >(operacao() | expressao())
+}
+void operacao() :
+{}
+{
+	( (< INTEGER >|< REAL >|< PARENTESE1 >operacao()< PARENTESE2 >)operador()(< INTEGER >|< REAL >|< IDENTIFICADOR >|< PARENTESE1 >operacao()< PARENTESE2 >) )
+}
+void operacao2() :
+{}
+{
+	operador()(< INTEGER >|< REAL >|< IDENTIFICADOR >|< PARENTESE1 >operacao()< PARENTESE2 >)
+}
+void operador() :
+{}
+{
+	< PLUS >|< SUB >|< MULT >|< DIV >|< MOD >
+}

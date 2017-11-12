@@ -1,0 +1,25 @@
+
+funcao					::= "function" identificador listaDeParametros ":" tipoDeParametro blocoFuncao
+listaDeParametros		::= "(" (nomeParametro contListaDeParametro)? ")"
+nomeParametro			::= identificador ":" tipoDeParametro
+contListaDeParametro	::= ( "," nomeParametro )*
+tipoDeParametro			::= "integer" | "string" | "real"
+
+blocoFuncao				::= "is" blocoVar? blocoCode
+blocoVar				::= "var" declaraVariavel* "endvar"
+declaraVariavel			::= identificador ":" tipoDeParametro atribuicao? ";"
+atribuicao				::= "(" (integer | string | real | identificador) operacao2? ")"
+blocoCode				::= "code" expressao* retorno "endcode"
+expressao				::= funcao | identificador (atribuicao | operacao2) ";"
+retorno					::= "return" (operacao | expressao)
+operacao				::= (integer | real | ("(" identificador operacao ")") operador (integer | real | identificador | "(" operacao ")"
+operacao2				::= operador (integer | real | identificador | ("(" operacao ")"))
+operador				::= "+" | "-" | "*" | "/" | "%"
+
+identificador			::= letra ( letra | digito )*
+letra					::= [a-zA-Z]
+digito					::= [0-9]
+
+integer					::= digito+
+string 					::= '"'.*'"'
+real					::= digito+"."digito+
