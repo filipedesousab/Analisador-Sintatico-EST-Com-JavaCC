@@ -8,7 +8,7 @@ package javacc;
 
 public class Parser
 {
-  public static void main(String [] args) throws ParseException, 
+  public static void main(String [] args) throws ParseException,
   TokenMgrError
   {
     Parser parser;
@@ -53,13 +53,7 @@ public class Parser
 
 PARSER_END(Parser)
 
-SKIP :
-{
-  " "
-| "\n"
-| "\r"
-| "\r\n"
-}
+SKIP : { " " | "\n" | "\r" | "\r\n" }
 
 //Palavras Reservadas
 TOKEN : { < FUNCTION : "function" > }
@@ -75,9 +69,8 @@ TOKEN : { < RETURN : "return" > }
 
 //Tipos e Identificador
 TOKEN : { < INTEGER : (<DIGITO>)+ > }
-TOKEN : { < STRING : <ASPAS>(<LETTER>(<LETTER>|<DIGITO>))*<ASPAS> > }
-TOKEN : { < REAL : (<DIGITO>)+ (<PONTO>(<DIGITO>)+)? > }
-TOKEN : { < IDENTIFICADOR : <LETTER>(<LETTER>|<DIGITO>)* > }
+TOKEN : { < REAL : ( <DIGITO> )+ ( <PONTO> ( <DIGITO> )+ )? > }
+TOKEN : { < IDENTIFICADOR : <LETTER> ( <LETTER> | <DIGITO> )* > }
 
 //Caracteres
 TOKEN : { < #LETTER : ["a"-"z","A"-"Z"] > }
@@ -95,23 +88,44 @@ TOKEN : { < MOD : "%" > }
 TOKEN : { < ASPAS : "\"" > }
 TOKEN : { < PONTO : "." > }
 
+TOKEN:
+{
+  <QUOTE:"'"> : STRING_STATE
+}
+
+<STRING_STATE> MORE:
+{
+  "\\" : ESC_STATE
+}
+
+<STRING_STATE> TOKEN:
+{
+  <ENDQUOTE:<QUOTE>> : DEFAULT
+| <CHAR:~["'","\\"]>
+}
+
+<ESC_STATE> TOKEN:
+{
+  <CNTRL_ESC:["\'","\\","/","b","f","n","r","t"]> : STRING_STATE
+}
+
 void Start() :
 {}
 {
-  funcao()
+  (funcao())*
   < EOF >
 }
 
 void funcao() :
 {}
 {
-	< FUNCTION >< IDENTIFICADOR >listaDeParametros()< DOISPONTOS >tipoDeParametro()blocoFuncao()
+	< FUNCTION > < IDENTIFICADOR > listaDeParametros() < DOISPONTOS > tipoDeParametro() blocoFuncao()
 }
 
 void listaDeParametros() :
 {}
 {
-	< PARENTESE1 >(nomeParametro()contListaDeParametro())?< PARENTESE2 >
+	< PARENTESE1 > ( nomeParametro() contListaDeParametro() )? < PARENTESE2 >
 }
 
 void nomeParametro() :
@@ -129,54 +143,67 @@ void tipoDeParametro() :
 {
 	< TIPOINTEGER >|< TIPOSTRING >|< TIPOREAL >
 }
+
 void blocoFuncao() :
 {}
 {
-	< IS >( blocoVar() )?blocoCode()
+	< IS > ( blocoVar() )? blocoCode()
 }
+
 void blocoVar() :
 {}
 {
-	< VAR >( declaraVariavel() )*< ENDVAR >
+	< VAR > ( declaraVariavel() )* < ENDVAR >
 }
+
 void declaraVariavel() :
 {}
 {
-	< IDENTIFICADOR >< DOISPONTOS >tipoDeParametro()( atribuicao() )?< PONTOVIRGULA >
+	< IDENTIFICADOR > < DOISPONTOS > tipoDeParametro() ( inicializacao() )? < PONTOVIRGULA >
 }
-void atribuicao() :
+
+void inicializacao() :
 {}
 {
-	< PARENTESE1 >((< INTEGER >|< STRING >|< REAL >|< IDENTIFICADOR >)(operacao2())?)< PARENTESE2 >
+	< PARENTESE1 > ( < QUOTE > | operacao() ) < PARENTESE2 >
 }
+
 void blocoCode() :
 {}
 {
 	< CODE > ( expressao() )* retorno() < ENDCODE >
 }
+
 void expressao() :
 {}
 {
-	funcao()|
-	< IDENTIFICADOR >(atribuicao() | operacao2())*< PONTOVIRGULA >
+	(operacao() | < QUOTE >) < PONTOVIRGULA >
 }
+
 void retorno() :
 {}
 {
-	< RETURN >(operacao() | expressao())
+	< RETURN > expressao()
 }
+
 void operacao() :
 {}
 {
-	( (< INTEGER >|< REAL >|< PARENTESE1 >operacao()< PARENTESE2 >)operador()(< INTEGER >|< REAL >|< IDENTIFICADOR >|< PARENTESE1 >operacao()< PARENTESE2 >) )
+	valor() (operador() operacao())?
 }
-void operacao2() :
+
+void valor() :
 {}
 {
-	operador()(< INTEGER >|< REAL >|< IDENTIFICADOR >|< PARENTESE1 >operacao()< PARENTESE2 >)
+	(< INTEGER >|< REAL >|< IDENTIFICADOR >) | sinal() (< INTEGER >|< REAL >)
 }
 void operador() :
 {}
 {
 	< PLUS >|< SUB >|< MULT >|< DIV >|< MOD >
+}
+void sinal() :
+{}
+{
+	< PLUS >|< SUB >
 }

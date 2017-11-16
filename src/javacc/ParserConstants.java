@@ -33,42 +33,52 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int INTEGER = 15;
   /** RegularExpression Id. */
-  int STRING = 16;
+  int REAL = 16;
   /** RegularExpression Id. */
-  int REAL = 17;
+  int IDENTIFICADOR = 17;
   /** RegularExpression Id. */
-  int IDENTIFICADOR = 18;
+  int LETTER = 18;
   /** RegularExpression Id. */
-  int LETTER = 19;
+  int DIGITO = 19;
   /** RegularExpression Id. */
-  int DIGITO = 20;
+  int DOISPONTOS = 20;
   /** RegularExpression Id. */
-  int DOISPONTOS = 21;
+  int VIRGULA = 21;
   /** RegularExpression Id. */
-  int VIRGULA = 22;
+  int PONTOVIRGULA = 22;
   /** RegularExpression Id. */
-  int PONTOVIRGULA = 23;
+  int PARENTESE1 = 23;
   /** RegularExpression Id. */
-  int PARENTESE1 = 24;
+  int PARENTESE2 = 24;
   /** RegularExpression Id. */
-  int PARENTESE2 = 25;
+  int PLUS = 25;
   /** RegularExpression Id. */
-  int PLUS = 26;
+  int SUB = 26;
   /** RegularExpression Id. */
-  int SUB = 27;
+  int MULT = 27;
   /** RegularExpression Id. */
-  int MULT = 28;
+  int DIV = 28;
   /** RegularExpression Id. */
-  int DIV = 29;
+  int MOD = 29;
   /** RegularExpression Id. */
-  int MOD = 30;
+  int ASPAS = 30;
   /** RegularExpression Id. */
-  int ASPAS = 31;
+  int PONTO = 31;
   /** RegularExpression Id. */
-  int PONTO = 32;
+  int QUOTE = 32;
+  /** RegularExpression Id. */
+  int ENDQUOTE = 34;
+  /** RegularExpression Id. */
+  int CHAR = 35;
+  /** RegularExpression Id. */
+  int CNTRL_ESC = 36;
 
   /** Lexical state. */
   int DEFAULT = 0;
+  /** Lexical state. */
+  int STRING_STATE = 1;
+  /** Lexical state. */
+  int ESC_STATE = 2;
 
   /** Literal token values. */
   String[] tokenImage = {
@@ -88,7 +98,6 @@ public interface ParserConstants {
     "\"endcode\"",
     "\"return\"",
     "<INTEGER>",
-    "<STRING>",
     "<REAL>",
     "<IDENTIFICADOR>",
     "<LETTER>",
@@ -105,6 +114,11 @@ public interface ParserConstants {
     "\"%\"",
     "\"\\\"\"",
     "\".\"",
+    "\"\\\'\"",
+    "\"\\\\\"",
+    "<ENDQUOTE>",
+    "<CHAR>",
+    "<CNTRL_ESC>",
   };
 
 }
