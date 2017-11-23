@@ -53,7 +53,7 @@ public class Parser
 
 PARSER_END(Parser)
 
-SKIP : { " " | "\n" | "\r" | "\r\n" }
+SKIP : { " " | "\n" | "\r" | "\r\n" | "\t" }
 
 //Palavras Reservadas
 TOKEN : { < FUNCTION : "function" > }
@@ -71,6 +71,7 @@ TOKEN : { < RETURN : "return" > }
 TOKEN : { < INTEGER : (<DIGITO>)+ > }
 TOKEN : { < REAL : ( <DIGITO> )+ ( <PONTO> ( <DIGITO> )+ )? > }
 TOKEN : { < IDENTIFICADOR : <LETTER> ( <LETTER> | <DIGITO> )* > }
+TOKEN : { < STRING : "\"" (~["\n","\r"])* "\"" > }
 
 //Caracteres
 TOKEN : { < #LETTER : ["a"-"z","A"-"Z"] > }
@@ -87,27 +88,6 @@ TOKEN : { < DIV : "/" > }
 TOKEN : { < MOD : "%" > }
 TOKEN : { < ASPAS : "\"" > }
 TOKEN : { < PONTO : "." > }
-
-TOKEN:
-{
-  <QUOTE:"'"> : STRING_STATE
-}
-
-<STRING_STATE> MORE:
-{
-  "\\" : ESC_STATE
-}
-
-<STRING_STATE> TOKEN:
-{
-  <ENDQUOTE:<QUOTE>> : DEFAULT
-| <CHAR:~["'","\\"]>
-}
-
-<ESC_STATE> TOKEN:
-{
-  <CNTRL_ESC:["\'","\\","/","b","f","n","r","t"]> : STRING_STATE
-}
 
 void Start() :
 {}
@@ -165,7 +145,7 @@ void declaraVariavel() :
 void inicializacao() :
 {}
 {
-	< PARENTESE1 > ( < QUOTE > | operacao() ) < PARENTESE2 >
+	< PARENTESE1 > ( < STRING > | operacao() ) < PARENTESE2 >
 }
 
 void blocoCode() :
@@ -177,7 +157,7 @@ void blocoCode() :
 void expressao() :
 {}
 {
-	(operacao() | < QUOTE >) < PONTOVIRGULA >
+	(operacao() | < STRING >) < PONTOVIRGULA >
 }
 
 void retorno() :

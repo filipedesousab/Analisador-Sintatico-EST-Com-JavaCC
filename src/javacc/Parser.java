@@ -171,8 +171,8 @@ public class Parser implements ParserConstants {
   final public void inicializacao() throws ParseException {
     jj_consume_token(PARENTESE1);
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case QUOTE:
-      jj_consume_token(QUOTE);
+    case STRING:
+      jj_consume_token(STRING);
       break;
     case INTEGER:
     case REAL:
@@ -197,9 +197,9 @@ public class Parser implements ParserConstants {
       case INTEGER:
       case REAL:
       case IDENTIFICADOR:
+      case STRING:
       case PLUS:
       case SUB:
-      case QUOTE:
         ;
         break;
       default:
@@ -221,8 +221,8 @@ public class Parser implements ParserConstants {
     case SUB:
       operacao();
       break;
-    case QUOTE:
-      jj_consume_token(QUOTE);
+    case STRING:
+      jj_consume_token(STRING);
       break;
     default:
       jj_la1[9] = jj_gen;
@@ -354,10 +354,10 @@ public class Parser implements ParserConstants {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x20,0x20000,0x200000,0x1c0,0x400,0x20000,0x800000,0x6038000,0x6038000,0x6038000,0x3e000000,0x38000,0x18000,0x6038000,0x3e000000,0x6000000,};
+      jj_la1_0 = new int[] {0x40,0x40000,0x800000,0x380,0x800,0x40000,0x2000000,0x180f0000,0x180f0000,0x180f0000,0xf8000000,0x70000,0x30000,0x18070000,0xf8000000,0x18000000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x1,0x1,0x1,0x0,0x0,0x0,0x0,0x0,0x0,};
+      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -474,7 +474,7 @@ public class Parser implements ParserConstants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[37];
+    boolean[] la1tokens = new boolean[34];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -491,7 +491,7 @@ public class Parser implements ParserConstants {
         }
       }
     }
-    for (int i = 0; i < 37; i++) {
+    for (int i = 0; i < 34; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

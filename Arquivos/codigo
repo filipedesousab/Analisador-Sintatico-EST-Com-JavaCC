@@ -1,0 +1,14 @@
+function exemplo5a() : real is
+var
+	x : integer (10);
+	s : string("ads");
+	y : real ("1.5");
+endvar
+code
+	return x;
+endcode
+
+function exemplo5b(a : integer, b : real, s : string) : string is
+code
+	return asd;
+endcode

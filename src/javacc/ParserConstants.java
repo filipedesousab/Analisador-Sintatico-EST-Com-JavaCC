@@ -11,74 +11,64 @@ public interface ParserConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int FUNCTION = 5;
+  int FUNCTION = 6;
   /** RegularExpression Id. */
-  int TIPOINTEGER = 6;
+  int TIPOINTEGER = 7;
   /** RegularExpression Id. */
-  int TIPOSTRING = 7;
+  int TIPOSTRING = 8;
   /** RegularExpression Id. */
-  int TIPOREAL = 8;
+  int TIPOREAL = 9;
   /** RegularExpression Id. */
-  int IS = 9;
+  int IS = 10;
   /** RegularExpression Id. */
-  int VAR = 10;
+  int VAR = 11;
   /** RegularExpression Id. */
-  int ENDVAR = 11;
+  int ENDVAR = 12;
   /** RegularExpression Id. */
-  int CODE = 12;
+  int CODE = 13;
   /** RegularExpression Id. */
-  int ENDCODE = 13;
+  int ENDCODE = 14;
   /** RegularExpression Id. */
-  int RETURN = 14;
+  int RETURN = 15;
   /** RegularExpression Id. */
-  int INTEGER = 15;
+  int INTEGER = 16;
   /** RegularExpression Id. */
-  int REAL = 16;
+  int REAL = 17;
   /** RegularExpression Id. */
-  int IDENTIFICADOR = 17;
+  int IDENTIFICADOR = 18;
   /** RegularExpression Id. */
-  int LETTER = 18;
+  int STRING = 19;
   /** RegularExpression Id. */
-  int DIGITO = 19;
+  int LETTER = 20;
   /** RegularExpression Id. */
-  int DOISPONTOS = 20;
+  int DIGITO = 21;
   /** RegularExpression Id. */
-  int VIRGULA = 21;
+  int DOISPONTOS = 22;
   /** RegularExpression Id. */
-  int PONTOVIRGULA = 22;
+  int VIRGULA = 23;
   /** RegularExpression Id. */
-  int PARENTESE1 = 23;
+  int PONTOVIRGULA = 24;
   /** RegularExpression Id. */
-  int PARENTESE2 = 24;
+  int PARENTESE1 = 25;
   /** RegularExpression Id. */
-  int PLUS = 25;
+  int PARENTESE2 = 26;
   /** RegularExpression Id. */
-  int SUB = 26;
+  int PLUS = 27;
   /** RegularExpression Id. */
-  int MULT = 27;
+  int SUB = 28;
   /** RegularExpression Id. */
-  int DIV = 28;
+  int MULT = 29;
   /** RegularExpression Id. */
-  int MOD = 29;
+  int DIV = 30;
   /** RegularExpression Id. */
-  int ASPAS = 30;
+  int MOD = 31;
   /** RegularExpression Id. */
-  int PONTO = 31;
+  int ASPAS = 32;
   /** RegularExpression Id. */
-  int QUOTE = 32;
-  /** RegularExpression Id. */
-  int ENDQUOTE = 34;
-  /** RegularExpression Id. */
-  int CHAR = 35;
-  /** RegularExpression Id. */
-  int CNTRL_ESC = 36;
+  int PONTO = 33;
 
   /** Lexical state. */
   int DEFAULT = 0;
-  /** Lexical state. */
-  int STRING_STATE = 1;
-  /** Lexical state. */
-  int ESC_STATE = 2;
 
   /** Literal token values. */
   String[] tokenImage = {
@@ -87,6 +77,7 @@ public interface ParserConstants {
     "\"\\n\"",
     "\"\\r\"",
     "\"\\r\\n\"",
+    "\"\\t\"",
     "\"function\"",
     "\"integer\"",
     "\"string\"",
@@ -100,6 +91,7 @@ public interface ParserConstants {
     "<INTEGER>",
     "<REAL>",
     "<IDENTIFICADOR>",
+    "<STRING>",
     "<LETTER>",
     "<DIGITO>",
     "\":\"",
@@ -114,11 +106,6 @@ public interface ParserConstants {
     "\"%\"",
     "\"\\\"\"",
     "\".\"",
-    "\"\\\'\"",
-    "\"\\\\\"",
-    "<ENDQUOTE>",
-    "<CHAR>",
-    "<CNTRL_ESC>",
   };
 
 }
