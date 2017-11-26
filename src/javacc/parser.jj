@@ -69,7 +69,7 @@ TOKEN : { < RETURN : "return" > }
 
 //Tipos e Identificador
 TOKEN : { < INTEGER : (<DIGITO>)+ > }
-TOKEN : { < REAL : ( <DIGITO> )+ ( <PONTO> ( <DIGITO> )+ )? > }
+TOKEN : { < REAL : ( ( <DIGITO> )+ ( <PONTO> ( <DIGITO> )* )? ) | ( ( <DIGITO> )* <PONTO> ( <DIGITO> )+ ) > }
 TOKEN : { < IDENTIFICADOR : <LETTER> ( <LETTER> | <DIGITO> )* > }
 TOKEN : { < STRING : "\"" (~["\n","\r"])* "\"" > }
 
@@ -113,11 +113,13 @@ void nomeParametro() :
 {
 	< IDENTIFICADOR >< DOISPONTOS >tipoDeParametro()
 }
+
 void contListaDeParametro() :
 {}
 {
 	( < VIRGULA >nomeParametro() )*
 }
+
 void tipoDeParametro() :
 {}
 {
@@ -177,11 +179,13 @@ void valor() :
 {
 	(< INTEGER >|< REAL >|< IDENTIFICADOR >) | sinal() (< INTEGER >|< REAL >)
 }
+
 void operador() :
 {}
 {
 	< PLUS >|< SUB >|< MULT >|< DIV >|< MOD >
 }
+
 void sinal() :
 {}
 {

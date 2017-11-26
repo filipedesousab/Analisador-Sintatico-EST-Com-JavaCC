@@ -1,0 +1,14 @@
+function exemplo5a() : real is
+var
+	x : integer (10);
+	s : string;
+	y : real (1.5);
+endvar
+code
+	return x;
+endcode
+
+function exemplo5b(a : integer, b : integer) : integer is
+code
+	return a + b;
+endcode
