@@ -1,14 +1,14 @@
 function funcao1() : real is
 var
-	x : integer (1-1);
+	x : integer (2);
 	s : string("\n");
-	y : real (.5);
+	y : real (-.5+4);
 endvar
 code
-	return x;
+	return x+y;
 endcode
 
 function funcao2(a : integer, b : real, s : string) : string is
 code
-	return 1%2;
+	return a;
 endcode

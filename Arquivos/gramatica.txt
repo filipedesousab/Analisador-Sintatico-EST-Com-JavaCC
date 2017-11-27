@@ -13,7 +13,7 @@ blocoCode				::= "code" expressao* retorno "endcode"
 expressao				::= (operacao | string) ";"
 retorno					::= "return" expressao
 operacao				::= valor (operador operacao)?
-valor					::= ( integer | real | identificador ) | sinal() ( integer | real )
+valor					::= ( sinal? ( integer | real ) ) | identificador
 operador				::= "+" | "-" | "*" | "/" | "%"
 sinal					::= "+" | "-"
 

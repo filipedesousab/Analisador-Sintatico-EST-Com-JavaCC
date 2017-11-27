@@ -177,7 +177,7 @@ void operacao() :
 void valor() :
 {}
 {
-	(< INTEGER >|< REAL >|< IDENTIFICADOR >) | sinal() (< INTEGER >|< REAL >)
+	( ( sinal() )? ( < INTEGER > | < REAL > ) ) | < IDENTIFICADOR >
 }
 
 void operador() :
